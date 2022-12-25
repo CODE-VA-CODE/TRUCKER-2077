@@ -1,15 +1,28 @@
-# engine file for Py Game Tell Engine
+import os
+import sys
+
 import pygame
 
+from MakeButton import load_image
+from configfile import screen
 
 class scenario_commands():
     def __init__(self):
         self.sc_file = str()
         self.scenario = str()
+        self.musics = dict()
+        self.sounds = dict()
+        self.backgrounds = dict()
+        self.pfont = pygame.font.Font(None, 25)
+        self.tfont = pygame.font.Font(None, 17)
+        self.personages = dict()
+        self.bg = str()
+
         # =============================================================================================================
         # Команды в файле сценария:
         #
-        # play_music(file) - проигрывание фоновой музыки
+        # play_music(music) - проигрывание фоновой музыки
+        # stop_music() - остановить проигрыванние музыки
         # bg_img(file) - фоновое изображение
         # tell(pers, text) - Отобразить text сказанный персонажем pers
         # play_sound(file) - Проиграть звук
@@ -18,6 +31,9 @@ class scenario_commands():
         # hide(pers) - спрятать персонажа pers
         # show(pers) - показать персонажа pers
         # pers_pose(pers, file) - выбрать file с позой для персонажа pers
+        # init_music(path, music) - путь path к музыке, music ключ для обращения в словарь с музыкой
+        # init_sound(path, sound) - путь path к звуку, music ключ для обращения в словарь со звуками
+        # init_bg(path, bg) - путь path к фону, bg ключ для обращения в словарь с фонами
         # =============================================================================================================
         # Условные знаки в тексте:
         #
@@ -25,58 +41,63 @@ class scenario_commands():
         # ~t~Text~t~ - Курсив
         # ~m~Text~m~ - Жирный шрифт
 
-    def open_scenario(self, sc_file):
-        self.sc_file = sc_file
-        with open(self.sc_file, encoding="utf-8") as sc:
-            self.scenario = sc.read().splitlines()
-        if(__name__ == "__main__"):
-            print(self.scenario)
-
-    def scenario_run(self):
-        line_number = 0
-        for line in self.scenario:
-            line_number += 1
-            if(line[:2] == "pl"):
-                if(line[5] == "m"):
-                    self.play_music(line[11:-1])
-                elif (line[5] == "s"):
-                    self.play_sound(line[11:-1])
-
-            elif(line[:2] == "bg"):
-                self.bg_img(line[11:-1])
-
-            elif(line[:2] == "te"):
-                self.tell(line[11:-1])
-
-            elif(line[:2] == "pe"):
-                self.pers_init(line[11:-1])
-
-            elif(line[:2] == "hi"):
-                self.hide(line[11:-1])
-
-            elif(line[:2] == "sh"):
-                self.show(line[11:-1])
-
     def play_music(self, music):
-        pass
+        try:
+            pygame.mixer.init()
+            pygame.mixer.music.load(self.musics[music])
+            pygame.mixer.music.play(loops=-1)
+        except:
+            print(f"A music file named {music} was not found")
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def init_music(self, path, music):
+        self.musics[music] = path
+
+    def init_sound(self, path, sound):
+        self.sounds[sound] = path
 
     def play_sound(self, sound):
-        pass
+        try:
+            pygame.mixer.init()
+            s = pygame.mixer.Sound(self.sounds[sound])
+            s.play()
+        except:
+            print(f"A sound file named {sound} was not found")
 
     def bg_img(self, bg):
-        pass
+        screen.blit(self.backgrounds[bg], (0, 0))
+        self.bg = bg
+        self.txt_bg = pygame.image.load("engine_imgs/txt_bg.png")
+        screen.blit(self.txt_bg, (0, 638))
 
-    def tell(self, pers, text):
-        pass
 
-    def pers_init(self, name, color, sprites, cn):
-        pass
+    def init_bg(self, path, bg):
+        self.backgrounds[bg] = pygame.image.load(path)
 
+    def tell(self, cn, text):
+        self.bg_img(self.bg)
+        personage_txt = self.pfont.render(self.personages[cn].name, True, self.personages[cn].color)
+        screen.blit(personage_txt, (5, 645))
+        text = self.tfont.render(text, True, (201, 201, 201))
+        screen.blit(text, (5, 670))
+        pygame.display.flip()
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    running = False
+                if event.type == pygame.QUIT:
+                    running = False
     def show(self, pers):
         pass
 
     def hide(self, pers):
         pass
+
+    def pers_init(self, name, color, sprites, cn):
+        self.personages[cn] = personage(name, color, sprites, cn)
 
 class personage():
     def __init__(self, name, color, sprites, cn):
@@ -87,6 +108,15 @@ class personage():
 
 
 if(__name__ == "__main__"):
-    scenario_commands().open_scenario("scenario\scenario.txt")
-if(__name__ == "__main__"):
-    print("OK")
+    x = scenario_commands()
+    x.init_music("../data/music/vespercellos_all_go_to_plan.mp3", "all_go_to_plan_1")
+    print(x.musics)
+    x.play_music("all_go_to_plan_1")
+    x.init_sound("../data/sounds/dialog_click.mp3", "click_1")
+    print(x.sounds)
+    x.play_sound("click_1")
+    pygame.init()
+    while pygame.event.wait().type != pygame.QUIT:
+        pass
+    # завершение работы:
+    pygame.quit()
