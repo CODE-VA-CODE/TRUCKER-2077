@@ -89,7 +89,8 @@ class scenario_commands():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     running = False
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
+                    sys.exit()
     def show(self, pers):
         pass
 
