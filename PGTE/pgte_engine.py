@@ -1,9 +1,8 @@
-import os
+# engine file for Py Game Tell Engine
 import sys
 
 import pygame
 
-from MakeButton import load_image
 from configfile import screen
 
 class scenario_commands():
@@ -15,6 +14,9 @@ class scenario_commands():
         self.backgrounds = dict()
         self.pfont = pygame.font.Font(None, 25)
         self.tfont = pygame.font.Font(None, 17)
+        self.cfont = pygame.font.Font(None, 45)
+        self.choice_bg = pygame.image.load("engine_imgs/choice_bg.png")
+        self.txt_bg = pygame.image.load("engine_imgs/txt_bg.png")
         self.personages = dict()
         self.bg = str()
 
@@ -34,6 +36,7 @@ class scenario_commands():
         # init_music(path, music) - путь path к музыке, music ключ для обращения в словарь с музыкой
         # init_sound(path, sound) - путь path к звуку, music ключ для обращения в словарь со звуками
         # init_bg(path, bg) - путь path к фону, bg ключ для обращения в словарь с фонами
+        # choice(choices) - создает выбор из choices и возвращает цифру в зависимости от выбора
         # =============================================================================================================
         # Условные знаки в тексте:
         #
@@ -69,7 +72,6 @@ class scenario_commands():
     def bg_img(self, bg):
         screen.blit(self.backgrounds[bg], (0, 0))
         self.bg = bg
-        self.txt_bg = pygame.image.load("engine_imgs/txt_bg.png")
         screen.blit(self.txt_bg, (0, 638))
 
 
@@ -99,6 +101,34 @@ class scenario_commands():
 
     def pers_init(self, name, color, sprites, cn):
         self.personages[cn] = personage(name, color, sprites, cn)
+
+    def choice(self, *choices):
+        count = 0
+        choices_rects = []
+        pcenter = (768 - 45 * len(choices) - 5 * (len(choices) - 1)) // 2
+        for txt in choices: # (768 - 17 * len(choices) - 2 * (n - 1)) // 2
+            txt = self.cfont.render(txt, True, (185, 185, 185))
+            choices_rects.append((pcenter + count, pcenter + count + 35))
+            print(pcenter + count)
+            screen.blit(self.choice_bg, (0, pcenter + count - 3))
+            screen.blit(txt, (75, pcenter + count))
+            count += 50
+
+        pygame.display.flip()
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    count = 1
+                    for i in choices_rects:
+                        if(i[0] <= pygame.mouse.get_pos()[1] <= i[1]):
+                            return count
+                        count += 1
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+
 
 class personage():
     def __init__(self, name, color, sprites, cn):

@@ -8,12 +8,11 @@ def scenario_1():
     scenario_init()
     sc_1.bg_img("bg_1")
     sc_1.tell("sm", "HELLO!!!")
-    sc_1.play_music("all_go_to_plan_1")
-    sc_1.tell("sm", "safasfaf!")
-    sc_1.tell("sm", "dsg!")
-    sc_1.tell("sm", "safdsggsdfaf!")
-    sc_1.tell("sm", "swgegwsfaf!")
-    sc_1.tell("sm", "swheaf!")
-    sc_1.tell("sm", "sawgewgfaf!")
     sc_1.tell("sm", "sawhrfaf!")
+    choice = sc_1.choice("1", "2")
+    if(choice == 1):
+        sc_1.tell("sm", "1")
+    if(choice == 2):
+        sc_1.tell("sm", "2")
+
     print(sc_1)

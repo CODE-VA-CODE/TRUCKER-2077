@@ -6,6 +6,7 @@ from configfile import screen
 pygame.init()
 pygame.display.set_caption('End credits')
 screen_r = screen.get_rect()
+print(screen_r, screen_r.centerx, screen_r.bottom, sep="\n")
 font = pygame.font.SysFont("Arial", 60)
 clock = pygame.time.Clock()
 
@@ -33,7 +34,6 @@ def main():
         screen.fill((0, 0, 0))
 
         for r, s in texts:
-            print(s)
             r.move_ip(0, -1)
             screen.blit(s, r)
 
