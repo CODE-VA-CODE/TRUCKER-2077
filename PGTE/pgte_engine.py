@@ -3,7 +3,8 @@ import sys
 
 import pygame
 
-from configfile import screen
+from configfile import screen, clock
+
 
 class scenario_commands():
     def __init__(self):
@@ -11,14 +12,17 @@ class scenario_commands():
         self.scenario = str()
         self.musics = dict()
         self.sounds = dict()
-        self.backgrounds = dict()
-        self.pfont = pygame.font.Font(None, 25)
-        self.tfont = pygame.font.Font(None, 17)
-        self.cfont = pygame.font.Font(None, 45)
+        self.gfont = "consolas"
+        self.backgrounds = {"black":pygame.image.load("engine_imgs/black_1366_768.png")}
+        self.pfont = pygame.font.SysFont(self.gfont, 32)
+        self.tfont = pygame.font.SysFont(self.gfont, 20)
+        self.cfont = pygame.font.SysFont(self.gfont, 45)
         self.choice_bg = pygame.image.load("engine_imgs/choice_bg.png")
         self.txt_bg = pygame.image.load("engine_imgs/txt_bg.png")
         self.personages = dict()
-        self.bg = str()
+        self.bg = "black"
+        self.cur_text = str
+        self.pers_is_show = False
 
         # =============================================================================================================
         # Команды в файле сценария:
@@ -81,26 +85,77 @@ class scenario_commands():
     def tell(self, cn, text):
         self.bg_img(self.bg)
         personage_txt = self.pfont.render(self.personages[cn].name, True, self.personages[cn].color)
-        screen.blit(personage_txt, (5, 645))
-        text = self.tfont.render(text, True, (201, 201, 201))
-        screen.blit(text, (5, 670))
+        screen.blit(personage_txt, (35, 645))
         pygame.display.flip()
         running = True
-        while running:
+        i = 1
+        while running and i <= len(text):
+            if pygame.key.get_pressed()[pygame.K_RIGHT]:
+                running = False
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.K_SPACE:
                     running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
+                        running = False
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-    def show(self, pers):
-        pass
+            blit_txt = self.tfont.render(text[:i], True, (201, 201, 201))
+            if(not self.pers_is_show):
+                self.bg_img(self.bg)
+                screen.blit(personage_txt, (35, 645))
+                screen.blit(blit_txt, (12, 680))
+                clock.tick(60)
+                pygame.display.flip()
+            else:
+                screen.blit(self.backgrounds[self.bg], (0, 0))
+                screen.blit(pygame.image.load(self.personages[self.cur_pers].sprites[self.cur_pose]), (-15, -150))
+                screen.blit(self.txt_bg, (0, 638))
+                screen.blit(personage_txt, (35, 645))
+                screen.blit(blit_txt, (12, 680))
+                clock.tick(60)
+                pygame.display.flip()
+            print(clock.get_fps())
+            i += 1
 
-    def hide(self, pers):
-        pass
 
-    def pers_init(self, name, color, sprites, cn):
-        self.personages[cn] = personage(name, color, sprites, cn)
+        blit_txt = self.tfont.render(text, True, (201, 201, 201))
+        screen.blit(blit_txt, (12, 680))
+        pygame.display.flip()
+        self.cur_text = blit_txt
+        running = True
+        while running:
+            if pygame.key.get_pressed()[pygame.K_RIGHT]:
+                running = False
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
+                        running = False
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+    def show(self, pers, pose):
+        self.pers_is_show = True
+        self.cur_pers = pers
+        self.cur_pose = pose
+        screen.blit(self.backgrounds[self.bg], (0, 0))
+        screen.blit(pygame.image.load(self.personages[pers].sprites[pose]), (-15, -150))
+        screen.blit(self.txt_bg, (0, 638))
+        screen.blit(self.cur_text, (12, 680))
+        pygame.display.flip()
+
+    def hide(self):
+        self.pers_is_show = False
+        screen.blit(self.backgrounds[self.bg], (0, 0))
+        screen.blit(self.txt_bg, (0, 638))
+        screen.blit(self.cur_text, (12, 680))
+        pygame.display.flip()
+
+    def pers_init(self, name, color, cn, sprites):
+        self.personages[cn] = personage(name, color, cn, sprites)
 
     def choice(self, *choices):
         count = 0
@@ -131,10 +186,10 @@ class scenario_commands():
 
 
 class personage():
-    def __init__(self, name, color, sprites, cn):
+    def __init__(self, name, color, cn, sprites):
         self.name = name
         self.color = color
-        self.sprites_folder = sprites
+        self.sprites = sprites
         self.code_name = cn
 
 
