@@ -12,6 +12,8 @@ class scenario_commands():
         self.scenario = str()
         self.musics = dict()
         self.sounds = dict()
+        self.pos_x = 0
+        self.pos_y = 0
         self.gfont = "consolas"
         self.backgrounds = {"black":pygame.image.load("engine_imgs/black_1366_768.png")}
         self.pfont = pygame.font.SysFont(self.gfont, 32)
@@ -32,8 +34,8 @@ class scenario_commands():
         # bg_img(file) - фоновое изображение
         # tell(pers, text) - Отобразить text сказанный персонажем pers
         # play_sound(file) - Проиграть звук
-        # pers_init(name, color, sprites, cn) - Создать класс pers и объявить его имя в игре - name
-        # Определить цвет имени в игре - color; Указать путь к папке со спрайтами - sprites; имя в сценарие - cn
+        # pers_init(name, color, cn, sprites) - Создать класс pers и объявить его имя в игре - name
+        # Определить цвет имени в игре - color; sprites - список путей к спрайтам игры
         # hide(pers) - спрятать персонажа pers
         # show(pers) - показать персонажа pers
         # pers_pose(pers, file) - выбрать file с позой для персонажа pers
@@ -41,6 +43,7 @@ class scenario_commands():
         # init_sound(path, sound) - путь path к звуку, music ключ для обращения в словарь со звуками
         # init_bg(path, bg) - путь path к фону, bg ключ для обращения в словарь с фонами
         # choice(choices) - создает выбор из choices и возвращает цифру в зависимости от выбора
+        #
         # =============================================================================================================
         # Условные знаки в тексте:
         #
@@ -73,7 +76,7 @@ class scenario_commands():
         except:
             print(f"A sound file named {sound} was not found")
 
-    def bg_img(self, bg):
+    def bg_img(self, bg="black"):
         screen.blit(self.backgrounds[bg], (0, 0))
         self.bg = bg
         screen.blit(self.txt_bg, (0, 638))
@@ -90,7 +93,7 @@ class scenario_commands():
         running = True
         i = 1
         while running and i <= len(text):
-            if pygame.key.get_pressed()[pygame.K_RIGHT]:
+            if pygame.key.get_pressed()[pygame.K_TAB]:
                 running = False
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.K_SPACE:
@@ -110,7 +113,7 @@ class scenario_commands():
                 pygame.display.flip()
             else:
                 screen.blit(self.backgrounds[self.bg], (0, 0))
-                screen.blit(pygame.image.load(self.personages[self.cur_pers].sprites[self.cur_pose]), (-15, -150))
+                screen.blit(self.personages[self.cur_pers].sprites[self.cur_pose], (self.pos_x, self.pos_y))
                 screen.blit(self.txt_bg, (0, 638))
                 screen.blit(personage_txt, (35, 645))
                 screen.blit(blit_txt, (12, 680))
@@ -126,7 +129,7 @@ class scenario_commands():
         self.cur_text = blit_txt
         running = True
         while running:
-            if pygame.key.get_pressed()[pygame.K_RIGHT]:
+            if pygame.key.get_pressed()[pygame.K_TAB]:
                 running = False
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -137,12 +140,14 @@ class scenario_commands():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-    def show(self, pers, pose):
+    def show(self, pers, pose, pos_x=0, pos_y=0):
         self.pers_is_show = True
+        self.pos_x = pos_x
+        self.pos_y = pos_y
         self.cur_pers = pers
         self.cur_pose = pose
         screen.blit(self.backgrounds[self.bg], (0, 0))
-        screen.blit(pygame.image.load(self.personages[pers].sprites[pose]), (-15, -150))
+        screen.blit(self.personages[pers].sprites[pose], (-15, -150))
         screen.blit(self.txt_bg, (0, 638))
         screen.blit(self.cur_text, (12, 680))
         pygame.display.flip()
@@ -165,7 +170,7 @@ class scenario_commands():
             txt = self.cfont.render(txt, True, (185, 185, 185))
             choices_rects.append((pcenter + count, pcenter + count + 35))
             print(pcenter + count)
-            screen.blit(self.choice_bg, (0, pcenter + count - 3))
+            screen.blit(self.choice_bg, (0, pcenter + count + 2))
             screen.blit(txt, (75, pcenter + count))
             count += 50
 
@@ -189,7 +194,11 @@ class personage():
     def __init__(self, name, color, cn, sprites):
         self.name = name
         self.color = color
-        self.sprites = sprites
+        self.sprites = dict()
+        print(sprites)
+        for key, value in sprites.items():
+            if(key != "none" or value != "none"):
+                self.sprites[key] = pygame.image.load(value)
         self.code_name = cn
 
 
