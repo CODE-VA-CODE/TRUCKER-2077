@@ -1,6 +1,7 @@
 import pygame
 import os, sys
-from configfile import screen
+
+from configfile import screen, clock, FPS
 
 
 #функция для подгрузки изображений
@@ -60,33 +61,8 @@ class MakeButton(pygame.sprite.Sprite):
     def hide(self):
         self.when_see = False
 
-
-#класс для создания ползунка
-class MakePolz(pygame.sprite.Sprite):
-    def __init__(self, *group, style, pos, size, name_vol):
-        super().__init__(*group)
-        # загружаем и преобразовываем изображение ползунка
-        self.style = load_image(style)
-        self.style = pygame.transform.scale(self.style, size)
-        self.polz_rect = self.style.get_rect()
-        self.polz_rect.x, self.polz_rect.y = pos
-        # y - const, т.к. кусрор двигается только по оси х
-        self.min_y = pos[1]
-        self.name_vol = name_vol
-        #храним фактическую позицию ползунка, а отрисовываем по х - 15 (по середине курсора)
-        #6.4 - константа для перевода координаты ползунка в громкость (от 1 до 100)
-        self.pos = (int(know_var(self.name_vol)) * 6.4 + 260, self.min_y)
-
-    def update(self, *args):
-        self.pos = (int(know_var(self.name_vol)) * 6.4 + 260, self.min_y)
-        # при отрисовке вычитаем 15 пикселей чтобы ползунок отрисовался по середине курсора по кординате х
-        screen.blit(self.style, (self.pos[0] - 15, self.min_y))
-        if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
-                self.min_y <= args[0].pos[1] <= self.min_y + 50 and 260 <= args[0].pos[0] <= 900:
-            #640 пикселей - длина области с которой взаимодействует пользователь
-            self.pos = (args[0].pos[0], self.polz_rect.y)
-            change_var(self.name_vol, int((int(self.pos[0]) - 250) // 6.4 - 1))
-
+    def scr_blit(self):
+        screen.blit(self.first_style, self.pos)
 
 #функция для изменения содержимого конфиг файла
 def change_var(name_of_var, new_value):

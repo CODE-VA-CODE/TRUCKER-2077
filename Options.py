@@ -1,6 +1,8 @@
+import sys
+
 import pygame
-from MakeButton import load_image, MakeButton, change_var, MakePolz
-from configfile import screen
+from MakeButton import load_image, MakeButton, change_var, know_var
+from configfile import screen, clock, FPS
 
 
 def go_back(s):
@@ -10,6 +12,67 @@ def go_back(s):
 def chage_vol_state(name_of_val):
         change_var(name_of_var=name_of_val[0], new_value=name_of_val[1])
 
+
+#класс для создания ползунка
+class MakePolz(pygame.sprite.Sprite):
+    def __init__(self, *group, style, pos, size, name_vol):
+        super().__init__(*group)
+        # загружаем и преобразовываем изображение ползунка
+        self.style = load_image(style)
+        self.style = pygame.transform.scale(self.style, size)
+        self.polz_rect = self.style.get_rect()
+        self.polz_rect.x, self.polz_rect.y = pos
+        # y - const, т.к. кусрор двигается только по оси х
+        self.min_y = pos[1]
+        #данная переменная нужна для определения конкретного показателя громкости в configefile.txt
+        self.name_vol = name_vol
+        #храним фактическую позицию ползунка, а отрисовываем по х - 15 (по середине курсора)
+        #6.4 - константа для перевода координаты ползунка в громкость (от 1 до 100)
+        self.pos = (int(know_var(self.name_vol)) * 6.4 + 260, self.min_y)
+        self.go_polz = False #движение ползунка
+
+    def update(self, *args):
+        self.pos = (int(know_var(self.name_vol)) * 6.4 + 260, self.min_y)
+        # при отрисовке вычитаем 15 пикселей чтобы ползунок отрисовался по середине курсора по кординате х
+        screen.blit(self.style, (self.pos[0] - 15, self.min_y))
+        if args and args[0].type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0] and \
+                self.min_y <= args[0].pos[1] <= self.min_y + 50 and 260 <= args[0].pos[0] <= 900:
+            self.go_polz = True
+            #создаём группу спрайтов без заданого ползунка(его будет отрисовывать в цикле, а остальные спрайты статичны)
+            MusicGroup = OptionsGroup.copy()
+            if self.name_vol == 'music_vol':
+                MusicGroup.remove(MusicPolz)
+                SoundPolz.scr_blit()
+                SysPolz.scr_blit()
+            if self.name_vol == 'sound_vol':
+                MusicGroup.remove(SoundPolz)
+                MusicPolz.scr_blit()
+                SysPolz.scr_blit()
+            if self.name_vol == 'sys_vol':
+                MusicGroup.remove(SysPolz)
+                MusicPolz.scr_blit()
+                SoundPolz.scr_blit()
+            #необходимо отрисовать 2 оставшихся ползунка чтобы при зажатой левой кнопке мыши они были видны
+            while self.go_polz:
+                for event in pygame.event.get():
+                    MusicGroup.update(event)
+                    if event.type == pygame.MOUSEBUTTONUP or pygame.mouse.get_focused() == False:
+                        self.go_polz = False
+                    if pygame.mouse.get_focused():
+                        if 260 <= event.pos[0] <= 900:
+                            self.pos = (event.pos[0], self.polz_rect.y)
+                            change_var(self.name_vol, int((int(self.pos[0]) - 250) // 6.4 - 1))
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    screen.blit(self.style, (self.pos[0] - 15, self.min_y))
+                pygame.display.flip()
+                clock.tick(FPS)
+            #640 пикселей - длина области с которой взаимодействует пользователь
+
+    #отрисовывает ползунок без update
+    def scr_blit(self):
+        screen.blit(self.style, (self.pos[0] - 15, self.min_y))
 
 class Options(pygame.sprite.Sprite):
         main_image = load_image("MainMenu\MainMenu.png")
@@ -21,7 +84,7 @@ class Options(pygame.sprite.Sprite):
             self.text_render_mode_1 = pygame.font.Font('data\shrift\Sprite.ttf', 110)
             self.text_render_mode_2 = pygame.font.Font('data\shrift\Sprite.ttf', 50)
             self.text_render_mode_3 = pygame.font.Font('data\shrift\Sprite.ttf', 30)
-            #найдись, сглаживание, цвет
+            #надпись, сглаживание, цвет
             self.text_settings = self.text_render_mode_1.render("Настройки", True, (255, 255, 255))
             self.text_music = self.text_render_mode_2.render("Музыка", True, (255, 255, 255))
             self.text_sound = self.text_render_mode_2.render("Звуки", True, (255, 255, 255))
