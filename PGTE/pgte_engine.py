@@ -36,8 +36,8 @@ class scenario_commands():
         # play_sound(file) - Проиграть звук
         # pers_init(name, color, cn, sprites) - Создать класс pers и объявить его имя в игре - name
         # Определить цвет имени в игре - color; sprites - список путей к спрайтам игры
-        # hide(pers) - спрятать персонажа pers
-        # show(pers) - показать персонажа pers
+        # hide() - спрятать персонажа
+        # show(pers, pose, pos_x, pos_y) - показать персонажа pers с позой pose в позиции x: pos_x; y: pos_y
         # pers_pose(pers, file) - выбрать file с позой для персонажа pers
         # init_music(path, music) - путь path к музыке, music ключ для обращения в словарь с музыкой
         # init_sound(path, sound) - путь path к звуку, music ключ для обращения в словарь со звуками

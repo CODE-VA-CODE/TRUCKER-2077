@@ -1,8 +1,9 @@
 import pygame
 
 from PGTE.pgte_engine import scenario_commands, personage
-from PGTE.scenarios.init_data import sc_1, scenario_init
 
+
+sc_1 = scenario_commands()
 
 def scen_1_data_init():
     bs_sprites = {"cl_eye_smile":"../data/images/sprites/bs/cl_eye_smile_1.png",
@@ -78,15 +79,22 @@ def scenario_1():
         sc_1.show("bs", "sm_smile", bsc_tuple[0], bsc_tuple[1])
         sc_1.tell("bs", "Ладно, хоть что-то полезное в тебе есть")
         sc_1.tell("na", "~ Фух... Пронесло ~")
+    sc_1.show("bs", "unkindly",  bsc_tuple[0], bsc_tuple[1])
     sc_1.tell("bs", "Следующий вопрос:")
     sc_1.tell("bs", "Какой у тебя опыт вождения грузовика?")
     question = sc_1.choice("Большой", "Средний", "Маленький")
     if(question == 1):
-        pass
+        sc_1.tell("i", "Я уже много лет вожу грузовики, в том числе и летающие")
+        bs += 1
     if(question == 2):
-        pass
+        sc_1.tell("i", "Ну у меня есть некоторый опыт вождения грузовиков")
     if(question == 3):
-        pass
+        sc_1.tell("i", "Если честно я вообще почти грузовик не водил")
+        bs -= 1
+
+    if(bs < -2):
+        sc_1.show("bs", "sm_smile", bsc_tuple[0], bsc_tuple[1])
+        sc_1.tell("bs", "Ну что-же, тогда я рад сообщить что ты нам не подходишь")
 
 
 
