@@ -1,7 +1,8 @@
 import sys
 import pygame
-from MakeButton import load_image, MakeButton
-from configfile import screen
+from MakeButton import load_image, MakeButton, know_var, change_var
+from Options import OptionsGroup
+from configfile import screen, clock, FPS
 
 
 def continue_game(s):
@@ -18,37 +19,42 @@ def play(s):
 
 
 def options(s):
-    print('options')
+    while know_var('is_options'):
+        for event in pygame.event.get():
+            OptionsGroup.update(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        pygame.display.flip()
+        clock.tick(FPS)
+    change_var('is_options', 'True')
 
 
 class MainMenu(pygame.sprite.Sprite):
         main_image = load_image("MainMenu\MainMenu.png")
-        logo_image = load_image("MainMenu\LameFutureText.png", -1)
-
+        logo_image = load_image("MainMenu\LameFuture470.png")
 
         def __init__(self, *group):
             super().__init__(*group)
             self.main_image = MainMenu.main_image
-            self.rect = self.main_image.get_rect()
-            self.rect.x, self.rect.y = 0, 0
-
             self.logo_image = MainMenu.logo_image
-            self.rectf = self.main_image.get_rect()
-            self.rectf.x, self.rectf.y = 0, 0
 
         def update(self, *args):
             screen.blit(self.main_image, (0, 0))
-            screen.blit(self.logo_image, (0, 0))
+            screen.blit(self.logo_image, (864, 184))
 
 
 MainMenuButtonGroup = pygame.sprite.Group()
 MainMenu = MainMenu()
-ContinueButton = MakeButton(first_style="MainMenu\ContinueButton.png", first_style_background=-1, pos=[433, 158],
-                            size=(500, 150), name_of_function=continue_game, arg_for_funtion=[1, 'sdf'], when_see=True)
-PlayButton = MakeButton(first_style="MainMenu\PlayButton.png", first_style_background=-1, pos=[433, 308],
-                            size=(500, 150), name_of_function=play, arg_for_funtion=[1, 'sdf'])
-OptionButton = MakeButton(first_style="MainMenu\OptionsButton.png", first_style_background=-1, pos=[433, 458],
-                            size=(500, 150), name_of_function=options, arg_for_funtion=[1, 'sdf'])
-ExitButton = MakeButton(first_style="MainMenu\ExitButton.png", first_style_background=-1, pos=[433, 608],
-                            size=(500, 150), name_of_function=exit, arg_for_funtion=[1, 'sdf'])
+ContinueButton = MakeButton(first_style="MainMenu\ContinueButton.png", first_style_background=-1, pos=[11, 11],
+                            size=(500, 150), name_of_function=continue_game, arg_for_funtion=[], when_see=False)
+PlayButton = MakeButton(first_style="MainMenu\PlayRus.png", first_style_background=-1, pos=[11, 171],
+                        size=(500, 150), second_style="MainMenu\PlayRusSecond.png",  second_style_background=-1,
+                        if_chage_style=True, name_of_function=play, arg_for_funtion=[])
+OptionButton = MakeButton(first_style="MainMenu\OptionsRus.png", first_style_background=-1, pos=[11, 331],
+                          size=(500, 150), second_style="MainMenu\OptionsRusSecond.png",  second_style_background=-1,
+                          if_chage_style=True, name_of_function=options, arg_for_funtion=[])
+ExitButton = MakeButton(first_style="MainMenu\ExitRus.png", first_style_background=-1, pos=[11, 491],
+                        second_style="MainMenu\ExitRusSecond.png",  second_style_background=-1, size=(500, 150),
+                        if_chage_style=True, name_of_function=exit, arg_for_funtion=[])
 MainMenuButtonGroup.add(MainMenu, ContinueButton, PlayButton, OptionButton, ExitButton)
