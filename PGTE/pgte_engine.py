@@ -15,12 +15,12 @@ class scenario_commands():
         self.pos_x = 0
         self.pos_y = 0
         self.gfont = "consolas"
-        self.backgrounds = {"black":pygame.image.load("engine_imgs/black_1366_768.png")}
+        self.backgrounds = {"black":pygame.image.load("PGTE/engine_imgs/black_1366_768.png")}
         self.pfont = pygame.font.SysFont(self.gfont, 32)
         self.tfont = pygame.font.SysFont(self.gfont, 20)
         self.cfont = pygame.font.SysFont(self.gfont, 45)
-        self.choice_bg = pygame.image.load("engine_imgs/choice_bg.png")
-        self.txt_bg = pygame.image.load("engine_imgs/txt_bg.png")
+        self.choice_bg = pygame.image.load("PGTE/engine_imgs/choice_bg.png")
+        self.txt_bg = pygame.image.load("PGTE/engine_imgs/txt_bg.png")
         self.personages = dict()
         self.bg = "black"
         self.cur_text = str
@@ -204,10 +204,10 @@ class personage():
 
 if(__name__ == "__main__"):
     x = scenario_commands()
-    x.init_music("../data/music/vespercellos_all_go_to_plan.mp3", "all_go_to_plan_1")
+    x.init_music("data/music/vespercellos_all_go_to_plan.mp3", "all_go_to_plan_1")
     print(x.musics)
     x.play_music("all_go_to_plan_1")
-    x.init_sound("../data/sounds/dialog_click.mp3", "click_1")
+    x.init_sound("data/sounds/dialog_click.mp3", "click_1")
     print(x.sounds)
     x.play_sound("click_1")
     pygame.init()

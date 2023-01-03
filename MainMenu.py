@@ -2,6 +2,7 @@ import sys
 import pygame
 from MakeButton import load_image, MakeButton, know_var, change_var
 from Options import OptionsGroup
+from PGTE.run import run
 from configfile import screen, clock, FPS
 
 
@@ -16,6 +17,7 @@ def exit(s):
 
 def play(s):
     print('play')
+    run()
 
 
 def options(s):

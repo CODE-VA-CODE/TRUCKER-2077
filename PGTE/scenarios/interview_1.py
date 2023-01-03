@@ -6,23 +6,23 @@ from PGTE.pgte_engine import scenario_commands, personage
 sc_1 = scenario_commands()
 
 def scen_1_data_init():
-    bs_sprites = {"cl_eye_smile":"../data/images/sprites/bs/cl_eye_smile_1.png",
-                  "concern":"../data/images/sprites/bs/concern_1.png",
-                  "norm":"../data/images/sprites/bs/norm_1.png",
-                  "one_eye_cl_smile":"../data/images/sprites/bs/one_eye_cl_smile_1.png",
-                  "shout":"../data/images/sprites/bs/shout_1.png",
-                  "sigh":"../data/images/sprites/bs/sigh_1.png",
-                  "sm_smile":"../data/images/sprites/bs/sm_smile_1.png",
-                  "unkindly":"../data/images/sprites/bs/unkindly_1.png"}
+    bs_sprites = {"cl_eye_smile":"data/images/sprites/bs/cl_eye_smile_1.png",
+                  "concern":"data/images/sprites/bs/concern_1.png",
+                  "norm":"data/images/sprites/bs/norm_1.png",
+                  "one_eye_cl_smile":"data/images/sprites/bs/one_eye_cl_smile_1.png",
+                  "shout":"data/images/sprites/bs/shout_1.png",
+                  "sigh":"data/images/sprites/bs/sigh_1.png",
+                  "sm_smile":"data/images/sprites/bs/sm_smile_1.png",
+                  "unkindly":"data/images/sprites/bs/unkindly_1.png"}
     sc_1.pers_init("Босс", (215, 215, 215), "bs", bs_sprites)
-    sc_1.init_music("../data/music/vespercellos_all_go_to_plan.mp3", "vc_agtp")
+    sc_1.init_music("data/music/vespercellos_all_go_to_plan.mp3", "vc_agtp")
     sc_1.pers_init("Я", (215, 215, 215), "i", {"none":"none"})
     sc_1.pers_init("", (213, 213, 213), "na", {"none":"none"}) # рассказчик/просто описание происходящего
-    sc_1.init_bg("../data/images/bg/office_building_2.png", "off_build_1")
-    sc_1.init_bg("../data/images/bg/office_3_day.png", "off_d_1")
-    sc_1.init_bg("../data/images/bg/office_1_evening.png", "off_ev_1")
-    sc_1.init_bg("../data/images/bg/office_1_night_off.png", "off_ni_off_1")
-    sc_1.init_bg("../data/images/bg/office_1_night_on.png", "off_ni_on_1")
+    sc_1.init_bg("data/images/bg/office_building_2.png", "off_build_1")
+    sc_1.init_bg("data/images/bg/office_3_day.png", "off_d_1")
+    sc_1.init_bg("data/images/bg/office_1_evening.png", "off_ev_1")
+    sc_1.init_bg("data/images/bg/office_1_night_off.png", "off_ni_off_1")
+    sc_1.init_bg("data/images/bg/office_1_night_on.png", "off_ni_on_1")
     print(sc_1.personages["bs"].sprites)
 
 def scenario_1():
