@@ -4,8 +4,9 @@ from PGTE.pgte_engine import scenario_commands, personage
 
 
 sc_1 = scenario_commands()
-
 def scen_1_data_init():
+    global sc_1
+    sc_1 = scenario_commands()
     bs_sprites = {"cl_eye_smile":"data/images/sprites/bs/cl_eye_smile_1.png",
                   "concern":"data/images/sprites/bs/concern_1.png",
                   "norm":"data/images/sprites/bs/norm_1.png",
