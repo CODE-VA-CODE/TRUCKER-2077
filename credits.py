@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 from configfile import screen, clock
+from MakeButton import MusicPlayer, know_var
 
 pygame.init()
 pygame.display.set_caption('End credits')
@@ -24,12 +25,12 @@ def main():
         cred_str = font.render(line, 1, (255, 255, 255))
         rend_str = cred_str.get_rect(centerx=screen_r.centerx, y=screen_r.bottom + i * 70)
         texts.append((rend_str, cred_str))
-    pygame.mixer.init()
-    pygame.mixer.music.load("data/music/vespercellos_all_go_to_plan_1.mp3")
-    pygame.mixer.music.play()
+    MusicPlayer.music_load("data/music/vespercellos_all_go_to_plan_1.mp3")
+    MusicPlayer.music_play()
     while True:
         for event in pygame.event.get():
             if event.type == QUIT or event.type == KEYDOWN and event.key == pygame.K_ESCAPE:
+                MusicPlayer.music_stop()
                 return
 
         screen.fill((0, 0, 0))
@@ -39,6 +40,7 @@ def main():
             screen.blit(prev_str, rend_str)
 
         if not screen_r.collidelistall([r for (r, _) in texts]):
+            MusicPlayer.music_stop()
             return
 
         pygame.display.flip()

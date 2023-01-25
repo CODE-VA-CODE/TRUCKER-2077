@@ -64,6 +64,28 @@ class MakeButton(pygame.sprite.Sprite):
     def scr_blit(self):
         screen.blit(self.first_style, self.pos)
 
+
+class Music:
+    def __init__(self, name_of_music, volume):
+        self.player = pygame.mixer.music
+        self.player.load(name_of_music)
+        self.player.set_volume(int(volume))
+
+    def music_load(self, name):
+        self.player.load(name)
+    def music_stop(self):
+        self.player.stop()
+
+    def music_pause(self):
+        self.player.pause()
+
+    def music_change_volume(self, volume):
+        self.player.set_volume(round((int(volume) / 100), 1))
+
+    def music_play(self):
+        self.player.play()
+
+
 #функция для изменения содержимого конфиг файла
 def change_var(name_of_var, new_value):
     with open('configefile.txt', mode='r') as f:
@@ -93,3 +115,7 @@ def know_var(name_of_var):
                     return False
                 else:
                     return strok[-1]
+
+
+MusicPlayer = Music(name_of_music='data/music/vespercellos_all_go_to_plan_1.mp3',
+                    volume=know_var('music_vol'))
