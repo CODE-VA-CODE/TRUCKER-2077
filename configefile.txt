@@ -1,5 +1,5 @@
 FPS = 60
 is_options = True
-music_vol = 37
-sound_vol = 53
-sys_vol = 23
+music_vol = 28
+sound_vol = 65
+sys_vol = 28

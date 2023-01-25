@@ -1,8 +1,12 @@
 import sys
 
 import pygame
-from MakeButton import load_image, MakeButton, change_var, know_var
+from MakeButton import load_image, MakeButton, change_var, know_var, MusicPlayer
 from configfile import screen, clock, FPS
+from credits import main
+
+
+polz_value = {'music_vol': MusicPlayer}
 
 
 def go_back(s):
@@ -11,6 +15,11 @@ def go_back(s):
 
 def chage_vol_state(name_of_val):
         change_var(name_of_var=name_of_val[0], new_value=name_of_val[1])
+        if len(name_of_val) == 3:
+            name_of_val[2].music_change_volume(name_of_val[1])
+
+def autors(s):
+    main()
 
 
 #класс для создания ползунка
@@ -32,6 +41,7 @@ class MakePolz(pygame.sprite.Sprite):
         self.go_polz = False #движение ползунка
 
     def update(self, *args):
+        global polz_value
         self.pos = (int(know_var(self.name_vol)) * 6.4 + 260, self.min_y)
         # при отрисовке вычитаем 15 пикселей чтобы ползунок отрисовался по середине курсора по кординате х
         screen.blit(self.style, (self.pos[0] - 15, self.min_y))
@@ -68,6 +78,7 @@ class MakePolz(pygame.sprite.Sprite):
                     screen.blit(self.style, (self.pos[0] - 15, self.min_y))
                 pygame.display.flip()
                 clock.tick(FPS)
+            polz_value[self.name_vol].music_change_volume(int(know_var(self.name_vol)))
             #640 пикселей - длина области с которой взаимодействует пользователь
 
     #отрисовывает ползунок без update
@@ -114,11 +125,11 @@ CircleMenuButton = MakeButton(first_style="MainMenu\OptionsCircle.png", first_st
 MusicVolButtonMin = MakeButton(first_style="MainMenu\MinRus.png", first_style_background=-1, pos=[940, 100],
                                size=(180, 60), second_style="MainMenu\MinRusSecond.png", if_chage_style=True,
                                second_style_background=-1, name_of_function=chage_vol_state,
-                               arg_for_funtion=['music_vol', 0])
+                               arg_for_funtion=['music_vol', 0, MusicPlayer])
 MusicVolButtonMax = MakeButton(first_style="MainMenu\MaxRus.png", first_style_background=-1, pos=[1127, 100],
                                size=(180, 60), second_style="MainMenu\MaxRusSecond.png", if_chage_style=True,
                                second_style_background=-1, name_of_function=chage_vol_state,
-                               arg_for_funtion=['music_vol', 100])
+                               arg_for_funtion=['music_vol', 100, MusicPlayer])
 SoundVolButtonMin = MakeButton(first_style="MainMenu\MinRus.png", first_style_background=-1, pos=[940, 175],
                                size=(180, 60), second_style="MainMenu\MinRusSecond.png",  second_style_background=-1,
                                name_of_function=chage_vol_state, arg_for_funtion=['sound_vol', 0],
@@ -133,8 +144,11 @@ SysVolButtonMin = MakeButton(first_style="MainMenu\MinRus.png", first_style_back
 SysVolButtonMax = MakeButton(first_style="MainMenu\MaxRus.png", first_style_background=-1, pos=[1127, 250],
                              size=(180, 60), second_style="MainMenu\MaxRusSecond.png",  second_style_background=-1,
                              name_of_function=chage_vol_state, arg_for_funtion=['sys_vol', 100], if_chage_style=True)
+Autors = MakeButton(first_style="MainMenu\Autors.png", first_style_background=-1, pos=[578, 678],
+                    size=(210, 70), second_style="MainMenu\AutorsSecond.png",  second_style_background=-1,
+                    name_of_function=autors, arg_for_funtion=[None], if_chage_style=True)
 MusicPolz = MakePolz(style='MainMenu\Polz.png', pos=[335, 105], size=(30, 50), name_vol='music_vol')
 SoundPolz = MakePolz(style='MainMenu\Polz.png', pos=[335, 180], size=(30, 50), name_vol='sound_vol')
 SysPolz = MakePolz(style='MainMenu\Polz.png', pos=[335, 255], size=(30, 50), name_vol='sys_vol')
 OptionsGroup.add(Options, CircleMenuButton, MusicVolButtonMin, MusicVolButtonMax, SoundVolButtonMin, SoundVolButtonMax,
-                 SysVolButtonMin, SysVolButtonMax, MusicPolz, SoundPolz, SysPolz)
+                 SysVolButtonMin, SysVolButtonMax, Autors, MusicPolz, SoundPolz, SysPolz)

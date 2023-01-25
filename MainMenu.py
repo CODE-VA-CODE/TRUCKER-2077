@@ -2,7 +2,10 @@ import sys
 import pygame
 from MakeButton import load_image, MakeButton, know_var, change_var
 from Options import OptionsGroup
+from PGTE.run import run
+from PGTE.scenarios.first_order_finish import finish_first_order
 from configfile import screen, clock, FPS
+from PGTE.scenarios.first_order_start import start_first_order
 
 
 def continue_game(s):
@@ -16,7 +19,8 @@ def exit(s):
 
 def play(s):
     print('play')
-
+    start_first_order()
+    finish_first_order()
 
 def options(s):
     while know_var('is_options'):
