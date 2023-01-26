@@ -5,7 +5,6 @@ from configfile import screen, clock
 from MakeButton import MusicPlayer, know_var
 
 pygame.init()
-pygame.display.set_caption('End credits')
 screen_r = screen.get_rect()
 print(screen_r, screen_r.centerx, screen_r.bottom, sep="\n")
 font = pygame.font.SysFont("Arial", 60)

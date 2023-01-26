@@ -1,6 +1,6 @@
 import pygame
 
-from MakeButton import MusicPlayer
+from MakeButton import MusicPlayer, change_var
 from PGTE.pgte_engine import scenario_commands
 
 
@@ -17,14 +17,13 @@ def first_order_finish_init():
 
 
 def first_order_finish():
-    global first_ord
     bsc_tuple = (300, 237)
     first_ord_fin.tell("i", "Наконец-то я доехал, дорога была такой утомительной")
     first_ord_fin.bg_img("roof_bg")
     MusicPlayer.music_load('data/music/quitemusic.mp3')
+    first_ord_fin.show("farmer", "farmer_with", bsc_tuple[0], bsc_tuple[1])
     MusicPlayer.music_play()
     first_ord_fin.tell("na", "~ Нужно скорее найти начальника и сбагрить ему этот груз ~")
-    first_ord_fin.show("farmer", "farmer_with", bsc_tuple[0], bsc_tuple[1])
     first_ord_fin.tell('na', '~ ... ~')
     first_ord_fin.tell('na', '~ А вот кажется и он ~')
     first_ord_fin.tell("i", "Здравствуйте, я грузчик из фирмы 'Доставим быстро', вот ваш заказ")
@@ -40,6 +39,13 @@ def first_order_finish():
     first_ord_fin.bg_img()
     first_ord_fin.hide()
     MusicPlayer.music_stop()
+    first_ord_fin.tell('na', '~ вы возвращаетесь к боссу и получаете новый заказ ~')
+    question = first_ord_fin.choice("Продолжить", "Выйти в главное меню")
+    if(question == 1):
+        change_var(name_of_var='number_of_lvl', new_value='2')
+    else:
+        change_var(name_of_var='number_of_lvl', new_value='2')
+        change_var(name_of_var='continue', new_value='False')
 
 
 def finish_first_order():

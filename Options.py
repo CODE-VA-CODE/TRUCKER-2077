@@ -1,12 +1,14 @@
 import sys
 
 import pygame
-from MakeButton import load_image, MakeButton, change_var, know_var, MusicPlayer
+from MakeButton import load_image, MakeButton, change_var, know_var, MusicPlayer, SysPlayer, SoundPlayer
 from configfile import screen, clock, FPS
 from credits import main
 
 
-polz_value = {'music_vol': MusicPlayer}
+polz_value = {'music_vol': MusicPlayer,
+              'sound_vol': SoundPlayer,
+              'sys_vol': SysPlayer}
 
 
 def go_back(s):
@@ -16,7 +18,7 @@ def go_back(s):
 def chage_vol_state(name_of_val):
         change_var(name_of_var=name_of_val[0], new_value=name_of_val[1])
         if len(name_of_val) == 3:
-            name_of_val[2].music_change_volume(name_of_val[1])
+            name_of_val[2].change_volume(name_of_val[1])
 
 def autors(s):
     main()
@@ -78,7 +80,7 @@ class MakePolz(pygame.sprite.Sprite):
                     screen.blit(self.style, (self.pos[0] - 15, self.min_y))
                 pygame.display.flip()
                 clock.tick(FPS)
-            polz_value[self.name_vol].music_change_volume(int(know_var(self.name_vol)))
+            polz_value[self.name_vol].change_volume(int(know_var(self.name_vol)))
             #640 пикселей - длина области с которой взаимодействует пользователь
 
     #отрисовывает ползунок без update
