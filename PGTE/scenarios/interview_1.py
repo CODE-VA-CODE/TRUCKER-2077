@@ -1,5 +1,6 @@
 import pygame
 
+from MakeButton import change_var
 from PGTE.pgte_engine import scenario_commands, personage
 
 
@@ -74,6 +75,7 @@ def scenario_1():
         sc_1.hide()
         sc_1.bg_img()
         sc_1.tell("i", "Вот черт...")
+        change_var(name_of_var='interview_stat', new_value='False')
         return
     if(question == 3): # Обажаю переработки!
         sc_1.tell("i", "Я всегда готов работать дополнительно на компанию!")
@@ -98,6 +100,7 @@ def scenario_1():
     if(bs < -2):
         sc_1.show("bs", "sm_smile", bsc_tuple[0], bsc_tuple[1])
         sc_1.tell("bs", "Ну что-же, тогда я рад сообщить что ты нам не подходишь")
+        change_var(name_of_var='interview_stat', new_value='False')
         return
 
     sc_1.tell("bs", "Хорошо")
@@ -119,4 +122,10 @@ def scenario_1():
         sc_1.tell("bs", "У меня в документах...")
         sc_1.tell("bs", "Написанно что у тебя никогда не было ни жены, ни детей")
         sc_1.tell("bs", "Зачем же ты мне солгал?")
-    print(sc_1)
+        sc_1.tell("i", "Извините, впредь я обещаю не лгать вам")
+    if(question == 2):
+        sc_1.tell("i", "Нет, я холост и совсем одинок")
+        sc_1.tell("bs", "Ну чтож, для такой работы это даже плюс")
+    sc_1.tell("bs", "Ладно, у нас нет других зандитатов, поэтому мы принимаем вас на работу")
+    sc_1.tell("bs", "Вот ваш первый заказ, преступайте же скорее")
+    sc_1.tell("i", "Спасибо босс, я не разачарую вас!")

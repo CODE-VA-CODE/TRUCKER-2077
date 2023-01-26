@@ -5,7 +5,6 @@ from configfile import screen, clock
 from MakeButton import MusicPlayer, know_var
 
 pygame.init()
-pygame.display.set_caption('End credits')
 screen_r = screen.get_rect()
 print(screen_r, screen_r.centerx, screen_r.bottom, sep="\n")
 font = pygame.font.SysFont("Arial", 60)
@@ -14,11 +13,11 @@ def main():
 
     credit_list = ["LAME FUTURE"," "," ","Авторы идеи:","Зубов Семён", "Кириков Андрей", " ",
                    "Главный композитор:", "Андрей (Который спер все из инета)", "", "Главный Дизайнер:", "NemoSemi", "",
-                   "Тот кто делал все вовремя", "в отличии от некоторых:", "Zubov Semyon", " ", "Создатель движка PGTE:", "VA", " ",
+                   "Ответственный за открытый мир:", "Zubov Semyon", " ", "Создатель движка PGTE:", "VA", " ",
                    "Главный редактор:", "Семен", " ", "Сценарист:", "Кириков А.", " ",
                    "В игре использовались треки групп:", "Гражданская оборона", "Vespercellos", " ",
                    "Фоны и спрайты были взяты", "с бесплатных ресурсов интернета", "так как рисовать мы не умеем)", "",
-                   "Код в общем и целом:", "ASStudio", " ", " ", " ", " ", " ", " ", "Спасибо за внимание!"]
+                   "Код в общем и целом:", "Untitled SA Studio", " ", " ", " ", " ", " ", " ", "Спасибо за внимание!"]
 
     texts = []
     for i, line in enumerate(credit_list):

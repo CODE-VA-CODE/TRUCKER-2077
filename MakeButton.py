@@ -1,7 +1,7 @@
 import pygame
 import os, sys
 
-from configfile import screen, clock, FPS
+from configfile import screen
 
 
 #функция для подгрузки изображений
@@ -69,7 +69,7 @@ class Music:
     def __init__(self, name_of_music, volume):
         self.player = pygame.mixer.music
         self.player.load(name_of_music)
-        self.player.set_volume(int(volume))
+        self.player.set_volume(round((int(volume) / 100), 1))
 
     def music_load(self, name):
         self.player.load(name)
@@ -79,11 +79,30 @@ class Music:
     def music_pause(self):
         self.player.pause()
 
-    def music_change_volume(self, volume):
+    def change_volume(self, volume):
         self.player.set_volume(round((int(volume) / 100), 1))
 
     def music_play(self):
         self.player.play()
+
+
+class Sound:
+    def __init__(self, name_of_music, volume):
+        self.sound = pygame.mixer
+        self.sound_player = self.sound.Sound(name_of_music)
+        self.sound_player.set_volume(round((int(volume) / 100), 1))
+
+    def sound_load(self, name):
+        self.sound_player = self.sound.Sound(name)
+
+    def sound_stop(self):
+        self.sound_player.stop()
+
+    def change_volume(self, volume):
+        self.sound_player.set_volume(round((int(volume) / 100), 1))
+
+    def sound_play(self):
+        self.sound_player.play()
 
 
 #функция для изменения содержимого конфиг файла
@@ -119,3 +138,7 @@ def know_var(name_of_var):
 
 MusicPlayer = Music(name_of_music='data/music/vespercellos_all_go_to_plan_1.mp3',
                     volume=know_var('music_vol'))
+SoundPlayer = Sound(name_of_music='data/sounds/dialog_click.mp3',
+                    volume=know_var('sound_vol'))
+SysPlayer = Sound(name_of_music='data/sounds/dialog_click.mp3',
+                    volume=know_var('sys_vol'))

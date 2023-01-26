@@ -3,11 +3,13 @@ import pygame
 from MakeButton import load_image, MakeButton, know_var, change_var
 from Options import OptionsGroup
 from PGTE.run import run
+from PGTE.scenarios.final_dialog_with_boss import start_final_dialog_with_boss
+from PGTE.scenarios.first_order_finish import finish_first_order
+from PGTE.scenarios.second_order_finish import finish_second_order
+from PGTE.scenarios.second_order_start import start_second_order
 from configfile import screen, clock, FPS
 from PGTE.scenarios.first_order_start import start_first_order
-
-def continue_game(s):
-    print('continue_game')
+from credits import main
 
 
 def exit(s):
@@ -16,9 +18,27 @@ def exit(s):
 
 
 def play(s):
-    print('play')
-    start_first_order()
-
+    change_var(name_of_var='interview_stat', new_value='True')
+    if know_var('continue') == False:
+        start_second_order()
+        # здесь должна быть 2 миниигра с машинкой
+        finish_second_order()
+        start_final_dialog_with_boss()
+        main()
+    if int(know_var('number_of_lvl')) == 1 and know_var('continue'):
+        run()
+        if know_var('interview_stat'):
+            start_first_order()
+            # здесь должна быть миниигра с машинкой
+            finish_first_order()
+    if int(know_var('number_of_lvl')) == 2 and know_var('continue'):
+        start_second_order()
+        #здесь должна быть 2 миниигра с машинкой
+        finish_second_order()
+        start_final_dialog_with_boss()
+        main()
+        #здесь должен быть подсчёт очков
+    change_var(name_of_var='continue', new_value='True')
 
 def options(s):
     while know_var('is_options'):
@@ -48,8 +68,6 @@ class MainMenu(pygame.sprite.Sprite):
 
 MainMenuButtonGroup = pygame.sprite.Group()
 MainMenu = MainMenu()
-ContinueButton = MakeButton(first_style="MainMenu\ContinueButton.png", first_style_background=-1, pos=[11, 11],
-                            size=(500, 150), name_of_function=continue_game, arg_for_funtion=[], when_see=False)
 PlayButton = MakeButton(first_style="MainMenu\PlayRus.png", first_style_background=-1, pos=[11, 171],
                         size=(500, 150), second_style="MainMenu\PlayRusSecond.png",  second_style_background=-1,
                         if_chage_style=True, name_of_function=play, arg_for_funtion=[])
@@ -59,4 +77,4 @@ OptionButton = MakeButton(first_style="MainMenu\OptionsRus.png", first_style_bac
 ExitButton = MakeButton(first_style="MainMenu\ExitRus.png", first_style_background=-1, pos=[11, 491],
                         second_style="MainMenu\ExitRusSecond.png",  second_style_background=-1, size=(500, 150),
                         if_chage_style=True, name_of_function=exit, arg_for_funtion=[])
-MainMenuButtonGroup.add(MainMenu, ContinueButton, PlayButton, OptionButton, ExitButton)
+MainMenuButtonGroup.add(MainMenu, PlayButton, OptionButton, ExitButton)

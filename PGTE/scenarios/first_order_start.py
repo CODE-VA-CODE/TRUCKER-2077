@@ -1,10 +1,9 @@
 import pygame
 
-from MakeButton import MusicPlayer, know_var
-from PGTE.pgte_engine import scenario_commands, personage
+from MakeButton import MusicPlayer
+from PGTE.pgte_engine import scenario_commands
 
 
-#first_ord = scenario_commands()
 def first_order_start_init():
     global first_ord
     first_ord = scenario_commands()
@@ -28,7 +27,7 @@ def first_order_start():
     first_ord.show("worker", "worker_norm", bsc_tuple[0], bsc_tuple[1])
     first_ord.tell('worker', 'Так, здравствуйте, вы верно привезли мне еду из ресторана?')
     first_ord.tell('na', '~ он вообще о чём ~')
-    first_ord.tell("i", "Нет, я доставщик, приехал за товаром")
+    first_ord.tell("i", "Нет, я дальнобойщик, приехал за товаром")
     first_ord.show("worker", "worker_shock", bsc_tuple[0], bsc_tuple[1])
     first_ord.tell('worker', 'A, ой, извините...')
     first_ord.show("worker", "worker_question", bsc_tuple[0], bsc_tuple[1])
@@ -41,7 +40,7 @@ def first_order_start():
     first_ord.tell('worker', 'Можешь забрать материалы в конце склада, постарайся доставить их в целости и сохранности')
     first_ord.tell("i", "Да хорошо, сейчас приступлю")
     first_ord.bg_img()
-    #убрать персонажа с экрана
+    first_ord.hide()
     MusicPlayer.music_stop()
     first_ord.tell('na', '"""Вы уходите и начинаете погрузку материалов"""')
     first_ord.tell('na', '~ Надо будет обязательно рассказать боссу про этого дурачка ~')
