@@ -24,7 +24,7 @@ def play(s):
         start_second_order()
         level2()
         finish_second_order()
-        start_final_dialog_with_boss()
+        start_final_dialog_with_boss()  # 1
         main()
     if int(know_var('number_of_lvl')) == 1 and know_var('continue'):
         run()
