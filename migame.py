@@ -49,7 +49,7 @@ class race():
             for i in range(self.count + 1):
                 screen.blit(self.cars[i].sprite, (self.cars[i].xpos, self.lanes[self.cars[i].lane]))
                 self.cars[i].xpos += self.cars[i].speed
-                if (self.iscollision(self.cars[i].xpos, self.cars[i].lane)):
+                if (self.iscollision(self.cars[i].xpos, self.cars[i].lane, 950, self.mcl)):
                     self.lifes -= 1
         except:
             pass
@@ -69,7 +69,7 @@ class race():
                     if(self.mcl > 2):
                         self.mcl = 2
 
-    def iscollision(self, car1x, car1l, car2x=950, car2l=self.mcl):
+    def iscollision(self, car1x, car1l, car2x, car2l):
         if(car1l != car2l):
             return False
         distance = car1x - car2x
@@ -77,4 +77,10 @@ class race():
             return True
 
 
-def level(ine)
+def level1():
+    level = race()
+    level.run(hard=3, finish=25)
+
+def level2():
+    level = race()
+    level.run(hard=3, finish=25)
