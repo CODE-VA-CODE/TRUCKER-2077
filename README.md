@@ -1,7 +1,5 @@
-<center>
-<img src="data/MainMenu/LameFuture470.png" class="image" height="500"/>
-<h1>Lame Future</h1>
-</center>
+<img align="center" src="data/MainMenu/LameFuture470.png" class="image" height="500"/>
+<h1 align="center">Lame Future</h1>
 <h3 align="center">made by <a href="https://github.com/VA-CYBER-DOC" target="_blank">VA</a>  and <a href="https://github.com/NeMoSemi" target="_blank">Nemo_Semi</a></h3>
 <a>
 <p>Сюжет: Игра представляет из себя симулятор грузчика выполненный в виде визуальной новеллы. В ходе игры нам предстоит доставлять грузы и узнавать секреты, которые скрывает от нас наша компания</p>
