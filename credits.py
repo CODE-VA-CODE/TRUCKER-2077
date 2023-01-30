@@ -2,11 +2,11 @@ import pygame
 from pygame.locals import *
 
 from configfile import screen, clock
-from MakeButton import MusicPlayer, know_var
+from MakeButton import MusicPlayer, know_var, change_var
 
 pygame.init()
 screen_r = screen.get_rect()
-print(screen_r, screen_r.centerx, screen_r.bottom, sep="\n")
+#print(screen_r, screen_r.centerx, screen_r.bottom, sep="\n")
 font = pygame.font.SysFont("Arial", 60)
 
 def main():
@@ -28,7 +28,7 @@ def main():
     MusicPlayer.music_play()
     while True:
         for event in pygame.event.get():
-            if event.type == QUIT or event.type == KEYDOWN and event.key == pygame.K_ESCAPE:
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == pygame.K_ESCAPE):
                 MusicPlayer.music_stop()
                 return
 
@@ -46,5 +46,26 @@ def main():
 
         clock.tick(30) # ОБЯЗАТЕЛЬНО УСТАНОВИТЬ 30 ПЕРЕД РЕЛИЗОМ
 
+def final_scores():
+    while(True):
+        screen.fill((0, 0, 0))
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == pygame.K_ESCAPE):
+                return
+
+        screen.blit(font.render("Очки:", False, (255, 255, 255)), (600, 0))
+        sc = know_var("score")
+        bsc = know_var("best_score")
+        if(int(sc) > int(bsc)):
+            change_var("best_score", sc)
+        screen.blit(font.render(("Личный счет: "+ sc), False, (255, 255, 255)), (520, 90))
+        screen.blit(font.render(("Лучший счет: "+ bsc), False, (255, 255, 255)), (518, 170))
+        screen.blit(font.render("Нажмите ESC чтобы выйти в меню", False, (255, 255, 255)), (300, 600))
+        pygame.display.flip()
+
+        clock.tick(30)
+
+
 if __name__ == '__main__':
     main()
+    final_scores()

@@ -1,8 +1,10 @@
 FPS = 60
 is_options = True
-music_vol = 16
+music_vol = 51
 sound_vol = 43
 sys_vol = 78
-number_of_lvl = 2
+number_of_lvl = 1
 interview_stat = True
 continue = True
+score = 0
+best_score = 0
