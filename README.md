@@ -1,4 +1,4 @@
-<img align="center" src="data/MainMenu/LameFuture470.png" class="image" height="500"/>
+<img src="data/MainMenu/LameFuture470.png" style="display: block; margin-left: auto; margin-right: auto" height="500"/>
 <h1 align="center">Lame Future</h1>
 <h3 align="center">made by <a href="https://github.com/VA-CYBER-DOC" target="_blank">VA</a>  and <a href="https://github.com/NeMoSemi" target="_blank">Nemo_Semi</a></h3>
 <a>
