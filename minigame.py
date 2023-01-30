@@ -27,6 +27,7 @@ class race():
         self.cars = dict()
 
     def run(self, hard=5, finish=25):
+        x = know_var("score")
         self.lifes = 3
         screen.blit(self.bg, (0, 0))
         lfont = pygame.font.SysFont("consolas", 59)
@@ -40,11 +41,12 @@ class race():
             self.main_car_move()
             self.bad_car_move()
             screen.blit(self.maincar, (950, self.lanes[self.mcl]))
-            lifestxt = lfont.render(str(self.lifes), False, (255, 255, 255))
+            lifestxt = lfont.render(("Жизней: " + str(self.lifes)), False, (255, 255, 255))
+            scoretxt = lfont.render(("Счет: " + str(self.count + int(x))), False, (255, 255, 255))
             screen.blit(lifestxt, (0, 0))
+            screen.blit(scoretxt, (400, 0))
             clock.tick(60)
             pygame.display.flip()
-        x = know_var("score")
         change_var("score", str(self.count + int(x)))
 
     def new_car(self):
