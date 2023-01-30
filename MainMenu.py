@@ -9,8 +9,8 @@ from PGTE.scenarios.second_order_finish import finish_second_order
 from PGTE.scenarios.second_order_start import start_second_order
 from configfile import screen, clock, FPS
 from PGTE.scenarios.first_order_start import start_first_order
-from credits import main
-from migame import level2, level1
+from credits import main, final_scores
+from minigame import level2, level1
 
 
 def exit(s):
@@ -20,6 +20,7 @@ def exit(s):
 
 def play(s):
     change_var(name_of_var='interview_stat', new_value='True')
+    change_var(name_of_var='score', new_value='0')
     if know_var('continue') == False:
         start_second_order()
         level2()
@@ -34,11 +35,11 @@ def play(s):
             finish_first_order()
     if int(know_var('number_of_lvl')) == 2 and know_var('continue'):
         start_second_order()
-        #здесь должна быть 2 миниигра с машинкой
+        level2()
         finish_second_order()
         start_final_dialog_with_boss()
         main()
-        #здесь должен быть подсчёт очков
+        final_scores()
     change_var(name_of_var='continue', new_value='True')
 
 def options(s):

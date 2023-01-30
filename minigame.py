@@ -3,6 +3,7 @@ import sys
 
 import pygame.image
 
+from MakeButton import change_var, know_var
 from configfile import screen, clock, FPS
 
 
@@ -12,6 +13,7 @@ class car():
         self.speed = speed
         self.lane = lane
         self.xpos = xpos
+        self.iscolised = False
 
 class race():
     def __init__(self):
@@ -25,20 +27,25 @@ class race():
         self.cars = dict()
 
     def run(self, hard=5, finish=25):
-        screen.blit(self.bg, (0, 0))
-        self.running = True
         self.lifes = 3
+        screen.blit(self.bg, (0, 0))
+        lfont = pygame.font.SysFont("consolas", 59)
+        self.running = True
         self.count = 0
         while(self.running and self.lifes > 0):
             screen.blit(self.bg, (0, 0))
-            screen.blit(self.maincar, (950, self.lanes[self.mcl]))
             if(random.randint(1, 7*hard) == 1):
                 self.new_car()
                 self.count += 1
             self.main_car_move()
             self.bad_car_move()
+            screen.blit(self.maincar, (950, self.lanes[self.mcl]))
+            lifestxt = lfont.render(str(self.lifes), False, (255, 255, 255))
+            screen.blit(lifestxt, (0, 0))
             clock.tick(60)
             pygame.display.flip()
+        x = know_var("score")
+        change_var("score", str(self.count + int(x)))
 
     def new_car(self):
         self.cars[self.count] = car(random.choice(self.car_sprites), 40,
@@ -49,8 +56,10 @@ class race():
             for i in range(self.count + 1):
                 screen.blit(self.cars[i].sprite, (self.cars[i].xpos, self.lanes[self.cars[i].lane]))
                 self.cars[i].xpos += self.cars[i].speed
-                if (self.iscollision(self.cars[i].xpos, self.cars[i].lane, 950, self.mcl)):
+                if (self.iscollision(self.cars[i].xpos, self.cars[i].lane, 950, self.mcl)
+                    and not self.cars[i].iscolised):
                     self.lifes -= 1
+                    self.cars[i].iscolised = True
         except:
             pass
 
@@ -84,3 +93,8 @@ def level1():
 def level2():
     level = race()
     level.run(hard=3, finish=25)
+
+if(__name__ == "__main__"):
+    change_var(name_of_var='score', new_value='0')
+    level1()
+    level2()
